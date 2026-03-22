@@ -1,21 +1,26 @@
 pipeline {
   agent any
+
+  tools {
+    jdk 'JDK_HOME'
+    maven 'MVN'
+  }
+
   stages {
-    stage('check out / git') {
+    stage('Checkout') {
       steps {
-        git(url: 'https://github.com/saumya-dutta/maven-samples', branch: 'master')
+        checkout scm
       }
     }
 
-    stage('run') {
+    stage('Build') {
       steps {
-        sh '''export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-export PATH=$JAVA_HOME/bin:$PATH
-
-java -version
-mvn verify'''
+        sh '''
+          java -version
+          mvn -version
+          mvn verify
+        '''
       }
     }
-
   }
 }
